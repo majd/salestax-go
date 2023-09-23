@@ -27,5 +27,6 @@ go.work
 ### Custom ###
 
 .idea/
+**/.DS_Store
 
 # End of Custom

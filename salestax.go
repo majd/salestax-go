@@ -23,27 +23,42 @@ const (
 	TaxAreaRegional  TaxArea = "regional"
 )
 
+// SalesTax is the sales tax object.
 type SalesTax struct {
-	Type     string
-	Rate     float32
-	Area     TaxArea
+	// Type is the type of the sales tax.
+	Type string
+	// Rate is the sales tax rate.
+	Rate float32
+	// Area is the area of the sales tax.
+	Area TaxArea
+	// Exchange is the tax exchange type of the sales tax.
 	Exchange TaxExchange
-	Charge   TaxCharge
+	// Charge contains information about the charge types of the sales tax.
+	Charge TaxCharge
 }
 
+// TaxCharge contains information about the charge types of the sales tax.
 type TaxCharge struct {
-	Direct  bool
+	// Direct implies that direct-charge rule should be in effect.
+	Direct bool
+	// Reverse implies that reverse-charge rule should be in effect.
 	Reverse bool
 }
 
+// Ctrl is the salestax controller.
 type Ctrl struct {
-	OriginCountryCode  *string
+	// OriginCountryCode is the country code of the tax registration and liability.
+	OriginCountryCode *string
+	// RegionalTaxEnabled specifies whether regional taxation is enabled, such as in the EU region.
+	// If this value is set to true (VAT OSS threshold is not exceeded), the rate of the origin country will be used.
 	RegionalTaxEnabled bool
 
 	regionCountries map[string][]string
 	taxRates        map[string]taxRate
 }
 
+// GetSalesTax returns the sales tax for the desired country.
+// The parameters stateCode and taxNumber are optional.
 func (t *Ctrl) GetSalesTax(countryCode string, stateCode *string, taxNumber *string) (*SalesTax, error) {
 	countryCode = strings.ToUpper(countryCode)
 	if stateCode != nil {
